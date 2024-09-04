@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfiles/postgres/Dockerfile
+    container_name: postgres
+    shm_size: 512mb
+    expose:
+      - 5432
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: charging
+    networks:
+      - ChargingNetwork
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfiles/backend/Dockerfile
+    container_name: backend
+    ports:
+      - '6565:6565'
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=test
+      - ALLOWED_HOSTS=*
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+    networks:
+      - ChargingNetwork
+    restart: always
+
+networks:
+  ChargingNetwork:
+    name: ChargingNetwork
