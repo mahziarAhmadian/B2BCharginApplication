@@ -16,7 +16,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         required=True, write_only=True, style={"input_type": "password"}
     )
-    permissions = serializers.JSONField(read_only=True)
 
     class Meta(object):
         model = User
@@ -25,7 +24,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
             "password",
             "access",
             "refresh",
-            "permissions",
         ]
 
     def get_tokens_for_user(self, user):
@@ -63,14 +61,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
         if user_obj:
             if not user_obj.check_password(password):
                 raise serializers.ValidationError("Invalid credentials.")
-
-        if user_obj.is_active:
             token = self.get_tokens_for_user(user=user_obj)
             data["access"] = token.get("access")
             data["refresh"] = token.get("refresh")
-            data["permissions"] = user_obj.permissions
-        else:
-            raise serializers.ValidationError("User not active.")
         return data
 
 

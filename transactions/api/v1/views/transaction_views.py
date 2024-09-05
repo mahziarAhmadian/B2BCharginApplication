@@ -6,6 +6,7 @@ from transactions.api.v1.permission import IsSuperAdmin, IsSeller
 from rest_framework.response import Response
 from transactions.models import Transactions
 from transactions.api.v1.filters import TransactionFilters
+from transactions.api.v1.paginations import CustomPagination
 
 
 class TransferAPIView(generics.CreateAPIView):
@@ -28,3 +29,4 @@ class TransactionViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = TransactionFilters
     ordering_fields = ["created_date"]
+    pagination_class = CustomPagination

@@ -9,6 +9,9 @@ class Command(BaseCommand):
         super(Command, self).__init__(*args, **kwargs)
 
     def handle(self, *args, **options):
-        User.objects.create_seller(
-            phone_number="09121234567", password="1234"
-        )
+        numbers = ['09121234567', '09121234598', '09121634598']
+        for number in numbers:
+            if not User.objects.filter(phone_number=number).exists():
+                User.objects.create_seller(
+                    phone_number=number, password="1234"
+                )
