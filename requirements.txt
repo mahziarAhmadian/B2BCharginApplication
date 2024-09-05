@@ -14,7 +14,7 @@ djangorestframework-simplejwt
 django-cors-headers
 
 # deployment module
-# gunicorn
+gunicorn
 
 # email third party modules
 #django-mail-templated
@@ -32,3 +32,4 @@ pytest-django
 # redis
 # django-redis
 # django-celery-beat
+locust
