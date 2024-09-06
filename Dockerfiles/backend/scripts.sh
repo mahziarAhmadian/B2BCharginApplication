@@ -11,10 +11,10 @@ while ! python manage.py migrate  2>&1; do
    echo "Migration is in progress status"
    sleep 3
 done
-#echo "Applying users..."
-#python manage.py insert_user
-#python manage.py insert_seller
-#python manage.py insert_superuser
+echo "Applying users..."
+python manage.py insert_user
+python manage.py insert_seller
+python manage.py insert_superuser
 
 # Collect static files
 echo "Collecting static files..."

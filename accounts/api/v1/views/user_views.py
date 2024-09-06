@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from ..serializers import user_serializers
+from rest_framework.permissions import IsAuthenticated
+from accounts.api.v1.permission import IsSeller
 
 User = get_user_model()
 
@@ -22,6 +24,6 @@ class UserLoginGenericAPIView(generics.GenericAPIView):
 
 
 class SellerGetUserAPIView(generics.ListAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated, IsSeller)
     serializer_class = user_serializers.SellerGetUserSerializer
     queryset = User.objects.filter(is_common_user=True)
