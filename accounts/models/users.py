@@ -55,7 +55,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
-    Custom User MMOdel for our app
+    Custom User Model for our app
     """
 
     id = models.UUIDField(
