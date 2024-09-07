@@ -51,14 +51,11 @@ class TestTransactionApi:
     def create_and_approve_balance(self, api_client, seller, super_admin, amount=1000000):
         """Helper function to create and approve a balance request for a seller."""
         # Create balance request
-        for _ in range(10):
-            api_client.force_authenticate(user=seller)
-            url = reverse("transactions:api-v1-request:get-balance")
-            amount = [1000000, 200000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 9500000]
-            data = {"balance": random.choice(amount)}
-            response = api_client.post(url, data)
-            assert response.status_code == 201
-
+        api_client.force_authenticate(user=seller)
+        url = reverse("transactions:api-v1-request:get-balance")
+        data = {"balance": amount}
+        response = api_client.post(url, data)
+        assert response.status_code == 201
         # Approve balance request by admin
         request_id = Request.objects.get(seller=seller, status='pending', balance=data.get('balance')).id
         api_client.force_authenticate(user=super_admin)
@@ -94,7 +91,8 @@ class TestTransactionApi:
         """Fixture to set up sellers with an initial approved balance."""
         sellers = [seller1, seller2]
         for seller in sellers:
-            self.create_and_approve_balance(api_client, seller, super_admin)
+            for _ in range(10):
+                self.create_and_approve_balance(api_client, seller, super_admin)
         return sellers
 
     @pytest.mark.parametrize("amount", [10, 20, 50, 100, 200])  # Example amounts
