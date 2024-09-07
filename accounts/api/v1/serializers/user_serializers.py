@@ -1,7 +1,5 @@
-from django.conf import settings
 from rest_framework import serializers
 from accounts.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.api.v1.serializers.custom_token_serializer import CustomTokenObtainPairSerializer
 
 class UserLoginSerializer(serializers.ModelSerializer):

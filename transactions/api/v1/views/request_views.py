@@ -2,7 +2,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from transactions.api.v1.filters import RequestFilters
-
 from transactions.models import Request
 from ..permission import IsSeller, IsSuperAdmin
 from ..serializers.request_serializers import SellerRequestSerializer, RequestSerializer
