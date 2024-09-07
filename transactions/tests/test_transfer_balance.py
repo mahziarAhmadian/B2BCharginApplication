@@ -1,3 +1,4 @@
+import random
 import pytest
 from rest_framework.test import APIClient
 from django.urls import reverse
@@ -55,7 +56,6 @@ class TestTransactionApi:
         data = {"balance": amount}
         response = api_client.post(url, data)
         assert response.status_code == 201
-
         # Approve balance request by admin
         request_id = Request.objects.get(seller=seller, status='pending', balance=data.get('balance')).id
         api_client.force_authenticate(user=super_admin)
@@ -91,7 +91,8 @@ class TestTransactionApi:
         """Fixture to set up sellers with an initial approved balance."""
         sellers = [seller1, seller2]
         for seller in sellers:
-            self.create_and_approve_balance(api_client, seller, super_admin)
+            for _ in range(10):
+                self.create_and_approve_balance(api_client, seller, super_admin)
         return sellers
 
     @pytest.mark.parametrize("amount", [10, 20, 50, 100, 200])  # Example amounts

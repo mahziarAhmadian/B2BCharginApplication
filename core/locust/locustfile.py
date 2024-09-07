@@ -1,5 +1,6 @@
-from locust import HttpUser, task, between
 import random
+from locust import HttpUser, task, between
+
 
 
 class Seller(HttpUser):
