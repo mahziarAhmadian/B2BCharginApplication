@@ -26,7 +26,7 @@ class Wallet(models.Model):
 
 
 @receiver(post_save, sender=User)
-def save_profile(sender, instance, created, **kwargs):
+def save_wallet(sender, instance, created, **kwargs):
     """
     Signal for post creating a wallet which activates when a user being created ONLY
     """
