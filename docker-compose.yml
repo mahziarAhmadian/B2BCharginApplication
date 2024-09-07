@@ -55,12 +55,12 @@ services:
   locust:
     build:
       context: .
-      dockerfile: Dockerfiles/locust/Dockerfile  # We'll create this Dockerfile later
+      dockerfile: Dockerfiles/locust/Dockerfile  
     container_name: locust
     volumes:
       - ./core/locust:/mnt/locust
     ports:
-      - "4545:8089"  # Locust web interface
+      - "4545:8089"  
     networks:
       - ChargingNetwork
     command: -f /mnt/locust/locustfile.py --host=http://nginx
