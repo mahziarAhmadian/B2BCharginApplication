@@ -7,6 +7,7 @@ class RequestFilters(filters.FilterSet):
         model = Request
         fields = {
             "status": ["exact"],
+            "seller__phone_number": ["exact"],
         }
 
 

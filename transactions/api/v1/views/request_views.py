@@ -2,7 +2,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, viewsets, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from transactions.api.v1.filters import RequestFilters
-
 from transactions.models import Request
 from ..permission import IsSeller, IsSuperAdmin
 from ..serializers.request_serializers import SellerRequestSerializer, RequestSerializer
@@ -52,7 +51,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 except Exception as e:
                     # Handle any other unforeseen errors
                     return Response({"detail": "An error occurred: " + str(e)},
-                                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                                    status=status.HTTP_400_BAD_REQUEST)
             else:
                 # If the status is not 'accept', just save the changes (if any)
                 serializer.save()

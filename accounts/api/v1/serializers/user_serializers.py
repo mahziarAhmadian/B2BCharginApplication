@@ -1,12 +1,10 @@
-from django.conf import settings
 from rest_framework import serializers
 from accounts.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
-
+from accounts.api.v1.serializers.custom_token_serializer import CustomTokenObtainPairSerializer
 
 class UserLoginSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField(
-        required=True,
+        required=True, write_only=True
     )
 
     access = serializers.CharField(allow_blank=True, read_only=True)
@@ -16,7 +14,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         required=True, write_only=True, style={"input_type": "password"}
     )
-    permissions = serializers.JSONField(read_only=True)
 
     class Meta(object):
         model = User
@@ -25,16 +22,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
             "password",
             "access",
             "refresh",
-            "permissions",
         ]
-
-    def get_tokens_for_user(self, user):
-        refresh = RefreshToken.for_user(user)
-
-        return {
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-        }
 
     def validate(self, data):
         phone_number = data.get("phone_number", None)
@@ -48,9 +36,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
         user = (
             User.objects.filter(phone_number=phone_number)
-                .exclude(phone_number__isnull=True)
-                .exclude(phone_number__iexact="")
-                .distinct()
+            .exclude(phone_number__isnull=True)
+            .exclude(phone_number__iexact="")
+            .distinct()
         )
 
         if user.exists() and user.count() == 1:
@@ -65,15 +53,15 @@ class UserLoginSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Invalid credentials.")
 
         if user_obj.is_active:
-            token = self.get_tokens_for_user(user=user_obj)
-            data["access"] = token.get("access")
-            data["refresh"] = token.get("refresh")
-            data["permissions"] = user_obj.permissions
+            # Generate tokens using the custom serializer
+            custom_serializer = CustomTokenObtainPairSerializer()
+            token = custom_serializer.get_token(user_obj)
+            # token = self.get_tokens_for_user(user=user_obj)
+            data['access'] = str(token.access_token)
+            data['refresh'] = str(token)
         else:
             raise serializers.ValidationError("User not active.")
         return data
-
-
 class SellerGetUserSerializer(serializers.ModelSerializer):
     id = serializers.CharField(read_only=True)
     phone_number = serializers.CharField()

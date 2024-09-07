@@ -45,14 +45,14 @@ class Transactions(models.Model):
             # Log the transaction for the seller (decrease)
             Transactions.objects.create(
                 user=seller,
-                request=None,  # or associate with a request if applicable
+                request=None,
                 value=-amount,
                 status='decrease'
             )
             # Log the transaction for the common user (increase)
             Transactions.objects.create(
                 user=common_user,
-                request=None,  # or associate with a request if applicable
+                request=None,
                 value=amount,
                 status='increase'
             )

@@ -1,7 +1,4 @@
 from rest_framework import serializers
-# from accounts.models import Profile, User
-# from blog.models import Post, Category
-# from comment.models.comments import Comment
 from transactions.models.request import Request
 
 
@@ -14,7 +11,6 @@ class SellerRequestSerializer(serializers.ModelSerializer):
 
     def validate_balance(self, balance):
         return balance
-
 
 
 class RequestSerializer(serializers.ModelSerializer):
