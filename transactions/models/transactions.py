@@ -7,7 +7,7 @@ from accounts.models.wallet import Wallet
 
 class Transactions(models.Model):
     """
-    this is a class to define categories for blog table
+    this is a class to define Transactions
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)

@@ -7,7 +7,7 @@ from .users import User
 
 class Wallet(models.Model):
     """
-    Profile class for each user which is being created to hold the information
+    Wallet class for each user which is being created to hold the information
     """
 
     id = models.UUIDField(
